@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/AngelMunoz/Perla/dev/perla.schema.json",
+  "schema-version": "2025-07",
+  "fable": {
+    "project": "./src/App.fsproj",
+    "sourceMaps": true
+  },
+  "mountDirectories": {
+    "/src": "./src",
+    "/Shared": "../Shared",
+    "/Perla.Client/src": "./src"
+  },
+  "devServer": {
+    "proxy": {
+      "/api/": "http://localhost:5000"
+    }
+  },
+  "dependencies": {
+    "date-fns": "2.29.3",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-dom/client": "19.1.0"
+  }
+}
