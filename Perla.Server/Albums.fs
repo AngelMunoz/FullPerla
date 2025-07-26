@@ -8,7 +8,7 @@ module Albums =
     let sampleStore = ResizeArray<Album>()
 
     let findPopular () : Async<Album list> =
-        async { return sampleStore |> Seq.filter (fun a -> a.rate > 3u) |> Seq.toList }
+        async { return sampleStore |> Seq.filter (fun a -> a.rate > 3) |> Seq.toList }
 
     let findAll () : Async<Album list> =
         async { return sampleStore |> Seq.toList }
@@ -22,7 +22,7 @@ module Albums =
                 { id = Guid.NewGuid()
                   title = args.title
                   artist = args.artist
-                  rate = 0u
+                  rate = 0
                   releaseDate = args.releaseDate }
 
             sampleStore.Add(newAlbum)
