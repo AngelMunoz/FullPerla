@@ -15,20 +15,21 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 
 module Program =
-    open Perla.Shared
-    let exitCode = 0
+  open Perla.Shared
+  let exitCode = 0
 
-    [<EntryPoint>]
-    let main args =
+  [<EntryPoint>]
+  let main args =
 
-        let builder = WebApplication.CreateBuilder(args)
+    let builder = WebApplication.CreateBuilder(args)
 
-        builder.Services.AddSingleton<MusicStore>(fun _ -> Albums.CreateService()) |> ignore
+    builder.Services.AddSingleton<MusicStore>(fun _ -> Albums.CreateService())
+    |> ignore
 
-        let app = builder.Build()
+    let app = builder.Build()
 
-        Albums.RegisterRoutes app
+    Albums.RegisterRoutes app
 
-        app.Run()
+    app.Run()
 
-        exitCode
+    exitCode
