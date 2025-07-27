@@ -14,27 +14,20 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 
-open Fable.Remoting.Server
-open Fable.Remoting.AspNetCore
-
 module Program =
+    open Perla.Shared
     let exitCode = 0
-
-    let getMusicStoreApp () =
-        let store = Albums.CreateService()
-
-        Remoting.createApi () |> Remoting.fromValue store
-
 
     [<EntryPoint>]
     let main args =
 
         let builder = WebApplication.CreateBuilder(args)
 
+        builder.Services.AddSingleton<MusicStore>(fun _ -> Albums.CreateService()) |> ignore
 
         let app = builder.Build()
 
-        app.UseRemoting(getMusicStoreApp ())
+        Albums.RegisterRoutes app
 
         app.Run()
 

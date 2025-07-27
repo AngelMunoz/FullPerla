@@ -2,6 +2,7 @@ namespace App
 
 open Feliz
 open Feliz.Router
+open Perla.Shared
 
 module Routing =
     /// <summary>
@@ -46,12 +47,12 @@ type Components =
     /// A React component that showcases the Albums API usage
     /// </summary>
     [<ReactComponent>]
-    static member AlbumsShowcase() =
+    static member AlbumsShowcase(musicStore: MusicStore) =
         let (albums, setAlbums) = React.useState ([])
 
         React.useEffectOnce (fun () ->
             async {
-                let! result = Albums.GetStore.findPopular ()
+                let! result = musicStore.findPopular ()
                 setAlbums (result)
             }
             |> Async.Start)
@@ -80,7 +81,7 @@ type Components =
     /// to determine what to show based on the current URL
     /// </summary>
     [<ReactComponent>]
-    static member Router() =
+    static member Router(musicStore: MusicStore) =
         let page = Routing.parseUrl (Router.currentPath ())
 
         let currentPage =
@@ -89,7 +90,7 @@ type Components =
             | Routing.Page.Hello -> Components.HelloWorld()
             | Routing.Page.Counter -> Components.Counter()
             | Routing.Page.NotFound -> Html.h1 "Not found"
-            | Routing.Page.AlbumsShowcase -> Components.AlbumsShowcase()
+            | Routing.Page.AlbumsShowcase -> Components.AlbumsShowcase(musicStore)
 
         Html.div
             [ prop.className "page-container"

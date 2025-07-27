@@ -5,16 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="../Shared/Shared.fs" />
     <Compile Include="Albums.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fable.Remoting.AspNetCore" Version="2.43.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Shared.fsproj" />
+    <PackageReference Include="Thoth.Json.Net" Version="12.0.0" />
   </ItemGroup>
 
 </Project>

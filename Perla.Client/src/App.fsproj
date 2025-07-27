@@ -1,20 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
+        <DefineConstants>FABLE_COMPILER</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="../../Shared/Shared.fs" />
         <Compile Include="Albums.fs" />
         <Compile Include="Components.fs" />
         <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Fable.Core" Version="4.5.0" />
-        <PackageReference Include="Fable.Remoting.Client" Version="7.35.0" />
+        <PackageReference Include="Fable.Promise" Version="3.2.0" />
         <PackageReference Include="Feliz" Version="2.9.0" />
         <PackageReference Include="Feliz.Router" Version="4.0.0" />
         <PackageReference Include="Fable.DateFunctions" Version="3.9.0" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\..\Shared\Shared.fsproj" />
+        <PackageReference Include="Thoth.Fetch" Version="3.0.1" />
+        <PackageReference Include="Thoth.Json" Version="10.4.1" />
     </ItemGroup>
 </Project>
