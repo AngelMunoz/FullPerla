@@ -1,10 +1,106 @@
+:root {
+  /* Core theme variables */
+  --radius-main: 8px;
+  --radius-toolbar: 0 0 16px 16px;
+  --gap-main: 1rem;
+  --gap-large: 1.5rem;
+  --container-max-width: 100vw;
+  --container-max-width-lg: 900px;
+  --container-max-width-md: 700px;
+  --container-margin-top: 5.5rem;
+  --container-margin-bottom: 2rem;
+  --container-padding: 5vw;
+  --container-padding-top: 1rem;
+  --font-weight-bold: 600;
+  --font-weight-medium: 500;
+
+  /* Color palette (light mode defaults) */
+  --color-bg: #f0f2f5;
+  --color-bg-light: #fff;
+  --color-fg: #222;
+  --color-primary: #1976d2;
+  --color-primary-dark: #0d47a1;
+  --color-primary-light: #90caf9;
+  --color-secondary: #888;
+  --color-error: #d32f2f;
+  --color-error-bg: #ffeaea;
+  --color-error-dark: #b71c1c;
+  --color-border: #e0e0e0;
+  --color-toolbar-bg: #f5f5f5;
+  --color-toolbar-link-hover-bg: #e3f2fd;
+  --color-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  /* Albums-specific */
+  --albums-radius: var(--radius-main);
+  --albums-sidebar-width: 220px;
+  --albums-gap: var(--gap-main);
+  --albums-main-gap: var(--gap-large);
+  --albums-bg: #f8f9fa;
+  --albums-sidebar-bg: var(--color-bg-light);
+  --albums-border: var(--color-border);
+  --albums-btn-bg: var(--color-toolbar-bg);
+  --albums-btn-color: var(--color-primary);
+  --albums-btn-hover-bg: var(--color-toolbar-link-hover-bg);
+  --albums-btn-hover-color: var(--color-primary-dark);
+  --albums-btn-disabled-bg: var(--color-border);
+  --albums-btn-disabled-color: var(--color-secondary);
+  --albums-error-bg: var(--color-error-bg);
+  --albums-error-color: var(--color-error);
+  --albums-cancel-hover-bg: var(--color-error-bg);
+  --albums-cancel-hover-color: var(--color-error-dark);
+  --albums-empty-color: var(--color-secondary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #181a1b;
+    --color-bg-light: #23272a;
+    --color-fg: #e0e0e0;
+    --color-primary: #90caf9;
+    --color-primary-dark: #1976d2;
+    --color-primary-light: #e3f2fd;
+    --color-secondary: #bbb;
+    --color-error: #ff8a80;
+    --color-error-bg: #2c2f33;
+    --color-error-dark: #b71c1c;
+    --color-border: #2c2f33;
+    --color-toolbar-bg: #23272a;
+    --color-toolbar-link-hover-bg: #263245;
+    --color-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    --albums-bg: #23272a;
+    --albums-sidebar-bg: #181a1b;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg: #f0f2f5;
+    --color-bg-light: #fff;
+    --color-fg: #222;
+    --color-primary: #1976d2;
+    --color-primary-dark: #0d47a1;
+    --color-primary-light: #90caf9;
+    --color-secondary: #888;
+    --color-error: #d32f2f;
+    --color-error-bg: #ffeaea;
+    --color-error-dark: #b71c1c;
+    --color-border: #e0e0e0;
+    --color-toolbar-bg: #f5f5f5;
+    --color-toolbar-link-hover-bg: #e3f2fd;
+    --color-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --albums-bg: #f8f9fa;
+    --albums-sidebar-bg: #fff;
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
-  background: #f0f2f5;
-  color: #222;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background: var(--color-bg);
+  color: var(--color-fg);
 }
 
 html {
@@ -23,94 +119,225 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
   margin-top: 0;
 }
 
 .toolbar {
   display: flex;
   gap: 1rem;
-  background: #f5f5f5;
+  background: var(--color-toolbar-bg);
   padding: 1rem 2rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--color-border);
   align-items: center;
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
-  border-radius: 0 0 16px 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  border-radius: var(--radius-toolbar);
+  box-shadow: var(--color-shadow);
 }
 
 .toolbar-link {
-  color: #1976d2;
+  color: var(--color-primary);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   padding: 0.25rem 0.75rem;
   border-radius: 4px;
   transition: background 0.2s, color 0.2s;
 }
 
 .toolbar-link:hover {
-  background: #e3f2fd;
-  color: #0d47a1;
+  background: var(--color-toolbar-link-hover-bg);
+  color: var(--color-primary-dark);
 }
 
 .page-container {
-  max-width: 700px;
-  margin: 5.5rem auto 2rem auto;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  border-radius: 8px;
+  width: 100%;
+  max-width: var(--container-max-width-md);
+  margin: var(--container-margin-top) auto var(--container-margin-bottom) auto;
+  background: var(--color-bg-light);
+  color: var(--color-fg);
+  box-shadow: var(--color-shadow);
+  border-radius: var(--radius-main);
+  padding: var(--container-padding);
+  padding-top: var(--container-padding-top);
+  box-sizing: border-box;
+  transition: max-width 0.2s, padding 0.2s;
+}
+
+@media (min-width: 900px) {
+  .page-container {
+    max-width: var(--container-max-width-lg);
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .page-container {
+    max-width: 100vw;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Albums module layout */
+.albums-layout {
+  display: flex;
+  flex-direction: row;
+  height: 80vh;
+  background: var(--albums-bg);
+  border-radius: var(--albums-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+  margin: 2rem auto;
+  max-width: 100vw;
+  max-width: 1100px;
+  transition: flex-direction 0.2s, height 0.2s;
+}
+
+@media (max-width: 900px) {
+  .albums-layout {
+    max-width: 100vw;
+    margin: 1rem;
+    height: auto;
+    flex-direction: column;
+    min-height: 60vh;
+  }
+}
+
+.albums-sidebar {
+  width: var(--albums-sidebar-width);
+  min-width: 160px;
+  max-width: 100vw;
+  background: var(--albums-sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: var(--albums-gap);
+  border-right: 1px solid var(--albums-border);
+  gap: var(--albums-gap);
+  box-sizing: border-box;
+  transition: width 0.2s, padding 0.2s;
+}
+
+@media (max-width: 900px) {
+  .albums-sidebar {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--albums-border);
+    flex-direction: row;
+    gap: 0.5rem;
+    padding: 0.5rem 0.5rem;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    overflow-x: auto;
+  }
+  .albums-sidebar-btn {
+    width: auto;
+    align-self: center;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .albums-sidebar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    padding: 0.5rem 0.25rem;
+  }
+}
+
+.albums-sidebar-title {
+  margin-bottom: var(--albums-gap);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.albums-sidebar-btn {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--albums-btn-bg);
+  color: var(--albums-btn-color);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.albums-sidebar-btn:disabled {
+  background: var(--albums-btn-disabled-bg);
+  color: var(--albums-btn-disabled-color);
+  cursor: not-allowed;
+}
+.albums-sidebar-btn:not(:disabled):hover {
+  background: var(--albums-btn-hover-bg);
+  color: var(--albums-btn-hover-color);
+}
+
+.albums-main {
+  flex-grow: 1;
   padding: 2rem;
-  padding-top: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--albums-main-gap);
+  min-width: 0;
+  box-sizing: border-box;
+  transition: padding 0.2s;
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #181a1b;
-    color: #e0e0e0;
-  }
-  .toolbar {
-    background: #23272a;
-    border-bottom: 1px solid #2c2f33;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  }
-  .toolbar-link {
-    color: #90caf9;
-  }
-  .toolbar-link:hover {
-    background: #263245;
-    color: #fff;
-  }
-  .page-container {
-    background: #23272a;
-    color: #e0e0e0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+@media (max-width: 900px) {
+  .albums-main {
+    padding: 1rem;
   }
 }
 
-@media (prefers-color-scheme: light) {
-  body {
-    background: #f0f2f5;
-    color: #222;
-  }
-  .toolbar {
-    background: #f5f5f5;
-    border-bottom: 1px solid #e0e0e0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-  }
-  .toolbar-link {
-    color: #1976d2;
-  }
-  .toolbar-link:hover {
-    background: #e3f2fd;
-    color: #0d47a1;
-  }
-  .page-container {
-    background: #fff;
-    color: #222;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+@media (max-width: 700px) {
+  .albums-main {
+    padding: 0.5rem;
+    gap: 0.75rem;
   }
 }
+
+.albums-loading {
+  text-align: center;
+  font-weight: var(--font-weight-bold);
+}
+
+.albums-error {
+  color: var(--albums-error-color);
+  background: var(--albums-error-bg);
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.albums-empty {
+  color: var(--albums-empty-color);
+  font-style: italic;
+}
+
+.albums-cancel-btn {
+  margin-top: 1rem;
+  background: var(--albums-btn-bg);
+  color: var(--albums-error-color);
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.albums-cancel-btn:hover {
+  background: var(--albums-cancel-hover-bg);
+  color: var(--albums-cancel-hover-color);
+}
+
+/* All color and theme overrides are now handled via :root and media queries above */

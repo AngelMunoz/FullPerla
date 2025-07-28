@@ -167,11 +167,27 @@ module Albums =
 
         match album with
         | Some a ->
-          let! updated = musicStore.update a
+          let! updatedAlbum =
+            ctx.Request.ReadFromJsonAsync<Album>().AsTask()
+            |> Async.AwaitTask
+            |> Async.Catch
 
-          match updated with
-          | Some u -> return Results.Ok(u)
-          | None -> return Results.NotFound()
+          match updatedAlbum with
+          | Choice1Of2 u ->
+            let updatedAlbum = {
+              a with
+                  title = u.title
+                  artist = u.artist
+                  rate = u.rate
+                  releaseDate = u.releaseDate
+            }
+
+            let! updated = musicStore.update updatedAlbum
+
+            match updated with
+            | Some u -> return Results.Ok(u)
+            | None -> return Results.NotFound()
+          | Choice2Of2 ex -> return Results.BadRequest()
         | None -> return Results.NotFound()
       })
     )

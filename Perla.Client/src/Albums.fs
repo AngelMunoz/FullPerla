@@ -34,7 +34,8 @@ let findPopular() = async {
 let findAll() = async {
   let! albulist =
     promise {
-      let! response = Fetch.get(AlbumsApiUrl, decoder = Codecs.Albums.decode)
+      let! response =
+        Fetch.get(AlbumsApiUrl, extra = Extras, decoder = Codecs.Albums.decode)
 
       return response
     }
@@ -218,6 +219,7 @@ module View =
     | AddCreated of Album
     | AddUpdated of Album
     | LoadPopular
+    | RequestAllAlbums
     | RequestViewDetail of System.Guid
     | RequestUpdateAlbum of NewAlbumArgs * Album
     | RequestCreateAlbum of NewAlbumArgs
@@ -320,6 +322,13 @@ module View =
     | RequestDeleteAlbum albumId ->
       let albums = state.Albums |> List.filter(fun a -> a.id <> albumId)
       { state with Albums = albums }, Cmd.none
+    | RequestAllAlbums ->
+      { state with IsLoading = true },
+      Cmd.OfAsync.either
+        store.findAll
+        ()
+        (fun albums -> SetView(Full albums))
+        (fun ex -> SetErrorMessage(Some ex.Message))
 
   let albumListView
     (albums: Album list)
@@ -367,8 +376,8 @@ module View =
   [<ReactComponent>]
   let AlbumListItem(album: Album, dispatch: Msg -> unit) =
     Html.li [
-      prop.text(album.title + " by " + album.artist)
       prop.children [
+        Html.span [ prop.text(album.title + " by " + album.artist) ]
         Html.button [
           prop.text "View"
           prop.onClick(fun _ -> dispatch(RequestViewDetail album.id))
@@ -409,52 +418,119 @@ module View =
   let AlbumsShowcase(musicStore: MusicStore) =
     let state, dispatch = React.useElmish(init, update musicStore)
 
-    Html.article [
-      Html.h1 "Albums"
-      if state.IsLoading then Html.p "Loading..." else Html.none
-      match state.ErrorMessage with
-      | Some err -> Html.p [ prop.style [ style.color.red ]; prop.text err ]
-      | None -> Html.none
-      Html.div [
-        match state.View with
-        | Full albums ->
-          Html.button [
-            prop.text "Create Album"
-            prop.onClick(fun _ -> dispatch(SetView Create))
-          ]
-
-          AlbumListView(
-            albums |> List.map(fun album -> AlbumListItem(album, dispatch))
-          )
-        | Popular albums ->
-          AlbumListView(
-            albums |> List.map(fun album -> AlbumListItem(album, dispatch))
-          )
-        | Detail album -> albumDetailView album dispatch state
-        | Update album ->
-          Html.div [
-            Html.h2 "Update Album"
-            Form.AlbumForm(
-              Some album,
-              (fun args -> dispatch(RequestUpdateAlbum(args, album)))
-            )
+    Html.section [
+      prop.className "albums-layout"
+      prop.children [
+        Html.nav [
+          prop.className "albums-sidebar"
+          prop.children [
+            Html.h2 [
+              prop.text "Albums"
+              prop.className "albums-sidebar-title"
+            ]
             Html.button [
-              prop.text "Cancel"
-              prop.onClick(fun _ -> dispatch(SetView(Detail album)))
+              prop.text "Popular"
+              prop.className "albums-sidebar-btn"
+              prop.onClick(fun _ -> dispatch(LoadPopular))
+              prop.disabled(
+                match state.View with
+                | Popular _ -> true
+                | _ -> false
+              )
+            ]
+            Html.button [
+              prop.text "All Albums"
+              prop.className "albums-sidebar-btn"
+              prop.onClick(fun _ -> dispatch(RequestAllAlbums))
+              prop.disabled(
+                match state.View with
+                | Full _ -> true
+                | _ -> false
+              )
+            ]
+            Html.button [
+              prop.text "Create New"
+              prop.className "albums-sidebar-btn"
+              prop.onClick(fun _ -> dispatch(SetView Create))
+              prop.disabled(
+                match state.View with
+                | Create -> true
+                | _ -> false
+              )
             ]
           ]
-        | Create ->
-          Html.div [
-            Html.h2 "Create Album"
-            Form.AlbumForm(
-              None,
-              (fun args -> dispatch(RequestCreateAlbum args))
-            )
-            Html.button [
-              prop.text "Cancel"
-              prop.onClick(fun _ -> dispatch(SetView(Full state.Albums)))
-            ]
+        ]
+        Html.main [
+          prop.className "albums-main"
+          prop.children [
+            if state.IsLoading then
+              Html.div [
+                prop.className "albums-loading"
+                prop.children [ Html.p "Loading..." ]
+              ]
+            match state.ErrorMessage with
+            | Some err ->
+              Html.div [ prop.className "albums-error"; prop.text err ]
+            | None -> Html.none
+            match state.View with
+            | Full albums ->
+              Html.section [
+                Html.h3 [ prop.text "All Albums" ]
+                if List.isEmpty albums then
+                  Html.p [
+                    prop.text "No albums found."
+                    prop.className "albums-empty"
+                  ]
+                else
+                  AlbumListView(
+                    albums
+                    |> List.map(fun album -> AlbumListItem(album, dispatch))
+                  )
+              ]
+            | Popular albums ->
+              Html.section [
+                Html.h3 [ prop.text "Popular Albums" ]
+                if List.isEmpty albums then
+                  Html.p [
+                    prop.text "No popular albums found."
+                    prop.className "albums-empty"
+                  ]
+                else
+                  AlbumListView(
+                    albums
+                    |> List.map(fun album -> AlbumListItem(album, dispatch))
+                  )
+              ]
+            | Detail album ->
+              Html.section [ albumDetailView album dispatch state ]
+            | Update album ->
+              Html.section [
+                Html.h3 [ prop.text "Update Album" ]
+                Form.AlbumForm(
+                  Some album,
+                  (fun args -> dispatch(RequestUpdateAlbum(args, album)))
+                )
+                Html.button [
+                  prop.text "Cancel"
+                  prop.className "albums-cancel-btn"
+                  prop.onClick(fun _ -> dispatch(SetView(Detail album)))
+                ]
+              ]
+            | Create ->
+              Html.section [
+                Html.h3 [ prop.text "Create Album" ]
+                Form.AlbumForm(
+                  None,
+                  (fun args -> dispatch(RequestCreateAlbum args))
+                )
+                Html.button [
+                  prop.text "Cancel"
+                  prop.className "albums-cancel-btn"
+                  prop.onClick(fun _ -> dispatch(SetView(Full state.Albums)))
+                ]
+              ]
+            | NotFound msg -> Html.section [ notFoundView msg ]
           ]
-        | NotFound msg -> notFoundView msg
+        ]
       ]
     ]
