@@ -1,3 +1,4 @@
+/* --- CSS Variables and Color Scheme --- */
 :root {
   /* Core theme variables */
   --radius-main: 8px;
@@ -70,274 +71,437 @@
     --albums-bg: #23272a;
     --albums-sidebar-bg: #181a1b;
   }
-}
+  /* End .album-form block */
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-bg: #f0f2f5;
-    --color-bg-light: #fff;
-    --color-fg: #222;
-    --color-primary: #1976d2;
-    --color-primary-dark: #0d47a1;
-    --color-primary-light: #90caf9;
-    --color-secondary: #888;
-    --color-error: #d32f2f;
-    --color-error-bg: #ffeaea;
-    --color-error-dark: #b71c1c;
-    --color-border: #e0e0e0;
-    --color-toolbar-bg: #f5f5f5;
-    --color-toolbar-link-hover-bg: #e3f2fd;
-    --color-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    --albums-bg: #f8f9fa;
-    --albums-sidebar-bg: #fff;
+  html {
+    box-sizing: border-box;
   }
-}
 
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  background: var(--color-bg);
-  color: var(--color-fg);
-}
-
-html {
-  box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: var(--font-weight-bold);
-  margin-top: 0;
-}
-
-.toolbar {
-  display: flex;
-  gap: 1rem;
-  background: var(--color-toolbar-bg);
-  padding: 1rem 2rem;
-  border-bottom: 1px solid var(--color-border);
-  align-items: center;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  border-radius: var(--radius-toolbar);
-  box-shadow: var(--color-shadow);
-}
-
-.toolbar-link {
-  color: var(--color-primary);
-  text-decoration: none;
-  font-weight: var(--font-weight-medium);
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  transition: background 0.2s, color 0.2s;
-}
-
-.toolbar-link:hover {
-  background: var(--color-toolbar-link-hover-bg);
-  color: var(--color-primary-dark);
-}
-
-.page-container {
-  width: 100%;
-  max-width: var(--container-max-width-md);
-  margin: var(--container-margin-top) auto var(--container-margin-bottom) auto;
-  background: var(--color-bg-light);
-  color: var(--color-fg);
-  box-shadow: var(--color-shadow);
-  border-radius: var(--radius-main);
-  padding: var(--container-padding);
-  padding-top: var(--container-padding-top);
-  box-sizing: border-box;
-  transition: max-width 0.2s, padding 0.2s;
-}
-
-@media (min-width: 900px) {
-  .page-container {
-    max-width: var(--container-max-width-lg);
-    padding-left: 3rem;
-    padding-right: 3rem;
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
   }
-}
 
-@media (max-width: 700px) {
-  .page-container {
-    max-width: 100vw;
-    padding-left: 1rem;
-    padding-right: 1rem;
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+      sans-serif;
+    background: var(--color-bg);
+    color: var(--color-fg);
   }
-}
 
-/* Albums module layout */
-.albums-layout {
-  display: flex;
-  flex-direction: row;
-  height: 80vh;
-  background: var(--albums-bg);
-  border-radius: var(--albums-radius);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  overflow: hidden;
-  margin: 2rem auto;
-  max-width: 100vw;
-  max-width: 1100px;
-  transition: flex-direction 0.2s, height 0.2s;
-}
-
-@media (max-width: 900px) {
-  .albums-layout {
-    max-width: 100vw;
-    margin: 1rem;
-    height: auto;
-    flex-direction: column;
-    min-height: 60vh;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: var(--font-weight-bold);
+    margin-top: 0;
   }
-}
 
-.albums-sidebar {
-  width: var(--albums-sidebar-width);
-  min-width: 160px;
-  max-width: 100vw;
-  background: var(--albums-sidebar-bg);
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: var(--albums-gap);
-  border-right: 1px solid var(--albums-border);
-  gap: var(--albums-gap);
-  box-sizing: border-box;
-  transition: width 0.2s, padding 0.2s;
-}
-
-@media (max-width: 900px) {
-  .albums-sidebar {
-    width: 100%;
-    min-width: 0;
-    border-right: none;
-    border-bottom: 1px solid var(--albums-border);
-    flex-direction: row;
-    gap: 0.5rem;
-    padding: 0.5rem 0.5rem;
+  /* --- Toolbar --- */
+  .toolbar {
+    display: flex;
+    gap: 1rem;
+    background: var(--color-toolbar-bg);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--color-border);
     align-items: center;
-    justify-content: center;
-    height: 100%;
-    overflow-x: auto;
-  }
-  .albums-sidebar-btn {
-    width: auto;
-    align-self: center;
-    margin-bottom: 0;
-  }
-}
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    border-radius: var(--radius-toolbar);
+    box-shadow: var(--color-shadow);
 
-@media (max-width: 700px) {
+    .toolbar-link {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: var(--font-weight-medium);
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      transition: background 0.2s, color 0.2s;
+
+      &:hover {
+        background: var(--color-toolbar-link-hover-bg);
+        color: var(--color-primary-dark);
+      }
+    }
+  }
+
+  .page-container {
+    width: 100%;
+    max-width: var(--container-max-width-md);
+    margin: var(--container-margin-top) auto var(--container-margin-bottom) auto;
+    background: var(--color-bg-light);
+    color: var(--color-fg);
+    box-shadow: var(--color-shadow);
+    border-radius: var(--radius-main);
+    padding: var(--container-padding);
+    padding-top: var(--container-padding-top);
+    box-sizing: border-box;
+    transition: max-width 0.2s, padding 0.2s;
+
+    @media (min-width: 900px) {
+      max-width: var(--container-max-width-lg);
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+    @media (max-width: 700px) {
+      max-width: 100vw;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+
+  /* --- Albums Module Layout --- */
+  .albums-layout {
+    display: flex;
+    flex-direction: row;
+    height: 80vh;
+    background: var(--albums-bg);
+    border-radius: var(--albums-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+    margin: 2rem auto;
+    max-width: 1100px;
+    transition: flex-direction 0.2s, height 0.2s;
+
+    @media (max-width: 900px) {
+      max-width: 100vw;
+      margin: 1rem;
+      height: auto;
+      flex-direction: column;
+      min-height: 60vh;
+    }
+  }
+
   .albums-sidebar {
+    width: var(--albums-sidebar-width);
+    min-width: 160px;
+    max-width: 100vw;
+    background: var(--albums-sidebar-bg);
+    display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 0.25rem;
-    padding: 0.5rem 0.25rem;
+    padding: var(--albums-gap);
+    border-right: 1px solid var(--albums-border);
+    gap: var(--albums-gap);
+    box-sizing: border-box;
+    transition: width 0.2s, padding 0.2s;
+
+    @media (max-width: 900px) {
+      width: 100%;
+      min-width: 0;
+      border-right: none;
+      border-bottom: 1px solid var(--albums-border);
+      flex-direction: row;
+      gap: 0.5rem;
+      padding: 0.5rem 0.5rem;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      overflow-x: auto;
+      .albums-sidebar-btn {
+        width: auto;
+        align-self: center;
+        margin-bottom: 0;
+      }
+    }
+    @media (max-width: 700px) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.25rem;
+      padding: 0.5rem 0.25rem;
+    }
+
+    .albums-sidebar-title {
+      margin-bottom: var(--albums-gap);
+      font-size: 1.5rem;
+      font-weight: var(--font-weight-bold);
+    }
+
+    .albums-sidebar-btn {
+      width: 100%;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      border: none;
+      border-radius: 4px;
+      background: var(--albums-btn-bg);
+      color: var(--albums-btn-color);
+      font-weight: var(--font-weight-medium);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+
+      &:disabled {
+        background: var(--albums-btn-disabled-bg);
+        color: var(--albums-btn-disabled-color);
+        cursor: not-allowed;
+      }
+      &:not(:disabled):hover {
+        background: var(--albums-btn-hover-bg);
+        color: var(--albums-btn-hover-color);
+      }
+    }
+  }
+
+  .albums-main {
+    flex-grow: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--albums-main-gap);
+    min-width: 0;
+    box-sizing: border-box;
+    transition: padding 0.2s;
+
+    @media (max-width: 900px) {
+      padding: 1rem;
+    }
+    @media (max-width: 700px) {
+      padding: 0.5rem;
+      gap: 0.75rem;
+    }
+  }
+
+  .albums-loading {
+    text-align: center;
+    font-weight: var(--font-weight-bold);
+  }
+  .albums-error {
+    color: var(--albums-error-color);
+    background: var(--albums-error-bg);
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  .albums-empty {
+    color: var(--albums-empty-color);
+    font-style: italic;
+  }
+  .albums-cancel-btn {
+    background: var(--albums-btn-bg);
+    color: var(--albums-error-color);
+    border: none;
+    border-radius: 4px;
+    padding: 0.7rem 1.5rem;
+    font-weight: var(--font-weight-bold);
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+    &:hover {
+      background: var(--albums-cancel-hover-bg);
+      color: var(--albums-cancel-hover-color);
+    }
+  }
+
+  /* All color and theme overrides are now handled via :root and media queries above */
+
+  /* --- Album List Item --- */
+  .album-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    margin-bottom: 0.75rem;
+    background: var(--albums-sidebar-bg);
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--albums-border);
+    transition: box-shadow 0.2s, border 0.2s;
+
+    &:hover {
+      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
+      border-color: var(--color-primary-light);
+    }
+
+    .album-list-item-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .album-list-item-title {
+      font-weight: var(--font-weight-bold);
+      font-size: 1.1rem;
+      color: var(--color-primary-dark);
+    }
+    .album-list-item-artist {
+      font-size: 0.97rem;
+      color: var(--color-secondary);
+    }
+    .album-list-item-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .album-list-item-btn {
+      padding: 0.35rem 1.1rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: var(--font-weight-medium);
+      font-size: 0.98rem;
+      cursor: pointer;
+      background: var(--albums-btn-bg);
+      color: var(--albums-btn-color);
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+      &.view:hover {
+        background: var(--color-primary-light);
+        color: var(--color-primary-dark);
+      }
+      &.edit:hover {
+        background: #fffde7;
+        color: #fbc02d;
+      }
+      &.delete {
+        background: var(--albums-error-bg);
+        color: var(--albums-error-color);
+      }
+      &.delete:hover {
+        background: var(--albums-cancel-hover-bg);
+        color: var(--albums-cancel-hover-color);
+      }
+    }
+  }
+
+  /* --- Album Form Modern Styles --- */
+  .album-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: var(--albums-sidebar-bg);
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    padding: 2rem 1.5rem;
+    max-width: 420px;
+    margin: 0 auto;
+    border: 1px solid var(--albums-border);
+
+    .album-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-weight: var(--font-weight-medium);
+        color: var(--color-primary-dark);
+        font-size: 1rem;
+      }
+    }
+
+    .album-form-input {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--albums-border);
+      border-radius: 4px;
+      font-size: 1rem;
+      background: var(--color-bg-light);
+      color: var(--color-fg);
+      transition: border 0.18s, box-shadow 0.18s;
+
+      &:focus {
+        border-color: var(--color-primary);
+        outline: none;
+        box-shadow: 0 0 0 2px var(--color-primary-light);
+      }
+    }
+
+    .album-form-submit-btn {
+      margin-top: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      background: var(--albums-btn-bg);
+      color: var(--albums-btn-color);
+      font-weight: var(--font-weight-bold);
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+      &:disabled {
+        background: var(--albums-btn-disabled-bg);
+        color: var(--albums-btn-disabled-color);
+        cursor: not-allowed;
+      }
+      &:not(:disabled):hover {
+        background: var(--albums-btn-hover-bg);
+        color: var(--albums-btn-hover-color);
+      }
+    }
+  }
+
+  /* Ensure .album-form-submit-btn is styled globally for buttons outside .album-form */
+  .album-form-submit-btn {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--albums-btn-bg);
+    color: var(--albums-btn-color);
+    font-weight: var(--font-weight-bold);
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  }
+  .album-form-submit-btn:disabled {
+    background: var(--albums-btn-disabled-bg);
+    color: var(--albums-btn-disabled-color);
+    cursor: not-allowed;
+  }
+  .album-form-submit-btn:not(:disabled):hover {
+    background: var(--albums-btn-hover-bg);
+    color: var(--albums-btn-hover-color);
   }
 }
 
-.albums-sidebar-title {
-  margin-bottom: var(--albums-gap);
-  font-size: 1.5rem;
-  font-weight: var(--font-weight-bold);
-}
-
-.albums-sidebar-btn {
-  width: 100%;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border: none;
-  border-radius: 4px;
-  background: var(--albums-btn-bg);
-  color: var(--albums-btn-color);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-.albums-sidebar-btn:disabled {
-  background: var(--albums-btn-disabled-bg);
-  color: var(--albums-btn-disabled-color);
-  cursor: not-allowed;
-}
-.albums-sidebar-btn:not(:disabled):hover {
-  background: var(--albums-btn-hover-bg);
-  color: var(--albums-btn-hover-color);
-}
-
-.albums-main {
-  flex-grow: 1;
-  padding: 2rem;
-  overflow-y: auto;
+/* --- Album Detail Modern Styles --- */
+.album-detail-card {
+  background: var(--albums-sidebar-bg);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.07);
+  border: 1px solid var(--albums-border);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 480px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: var(--albums-main-gap);
-  min-width: 0;
-  box-sizing: border-box;
-  transition: padding 0.2s;
-}
+  gap: 2rem;
 
-@media (max-width: 900px) {
-  .albums-main {
-    padding: 1rem;
+  .album-detail-title {
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary-dark);
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  .album-detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+
+    .album-detail-artist {
+      font-size: 1.1rem;
+      color: var(--color-secondary);
+    }
+    .album-detail-date {
+      font-size: 1.05rem;
+      color: var(--color-fg);
+    }
+  }
+  .album-detail-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
   }
 }
-
-@media (max-width: 700px) {
-  .albums-main {
-    padding: 0.5rem;
-    gap: 0.75rem;
-  }
-}
-
-.albums-loading {
-  text-align: center;
-  font-weight: var(--font-weight-bold);
-}
-
-.albums-error {
-  color: var(--albums-error-color);
-  background: var(--albums-error-bg);
-  padding: 1rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-}
-
-.albums-empty {
-  color: var(--albums-empty-color);
-  font-style: italic;
-}
-
-.albums-cancel-btn {
-  margin-top: 1rem;
-  background: var(--albums-btn-bg);
-  color: var(--albums-error-color);
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-.albums-cancel-btn:hover {
-  background: var(--albums-cancel-hover-bg);
-  color: var(--albums-cancel-hover-color);
-}
-
-/* All color and theme overrides are now handled via :root and media queries above */

@@ -107,8 +107,6 @@ module View =
   open Feliz.UseElmish
   open Elmish
 
-
-
   module Form =
     type AlbumFormState = {
       Title: string
@@ -170,27 +168,62 @@ module View =
         React.useElmish(albumFormInit albumOpt, albumFormUpdate onSubmit)
 
       Html.form [
+        prop.className "album-form"
         prop.onSubmit(fun e ->
           e.preventDefault()
           dispatch Submit)
         prop.children [
-          Html.input [
-            prop.value state.Title
-            prop.onChange(SetTitle >> dispatch)
-            prop.placeholder "Title"
+          Html.div [
+            prop.className "album-form-group"
+            prop.children [
+              Html.label [ prop.htmlFor "album-title"; prop.text "Title" ]
+              Html.input [
+                prop.id "album-title"
+                prop.className "album-form-input"
+                prop.value state.Title
+                prop.onChange(SetTitle >> dispatch)
+                prop.placeholder "Title"
+                prop.required true
+              ]
+            ]
           ]
-          Html.input [
-            prop.value state.Artist
-            prop.onChange(SetArtist >> dispatch)
-            prop.placeholder "Artist"
+          Html.div [
+            prop.className "album-form-group"
+            prop.children [
+              Html.label [ prop.htmlFor "album-artist"; prop.text "Artist" ]
+              Html.input [
+                prop.id "album-artist"
+                prop.className "album-form-input"
+                prop.value state.Artist
+                prop.onChange(SetArtist >> dispatch)
+                prop.placeholder "Artist"
+                prop.required true
+              ]
+            ]
           ]
-          Html.input [
-            prop.value state.ReleaseDate
-            prop.onChange(SetReleaseDate >> dispatch)
-            prop.placeholder "Release Date (yyyy-MM-dd)"
-            prop.type' "date"
+          Html.div [
+            prop.className "album-form-group"
+            prop.children [
+              Html.label [
+                prop.htmlFor "album-release-date"
+                prop.text "Release Date"
+              ]
+              Html.input [
+                prop.id "album-release-date"
+                prop.className "album-form-input"
+                prop.value state.ReleaseDate
+                prop.onChange(SetReleaseDate >> dispatch)
+                prop.placeholder "Release Date (yyyy-MM-dd)"
+                prop.type' "date"
+                prop.required true
+              ]
+            ]
           ]
-          Html.button [ prop.type' "submit"; prop.text "Save" ]
+          Html.button [
+            prop.type' "submit"
+            prop.className "album-form-submit-btn"
+            prop.text "Save"
+          ]
         ]
       ]
 
@@ -237,7 +270,13 @@ module View =
 
   let update (store: MusicStore) (msg: Msg) (state: State) : State * Cmd<Msg> =
     match msg with
-    | SetView view -> { state with View = view }, Cmd.none
+    | SetView view ->
+      {
+        state with
+            View = view
+            IsLoading = false
+      },
+      Cmd.none
     | SetAlbums albums ->
       {
         state with
@@ -330,65 +369,43 @@ module View =
         (fun albums -> SetView(Full albums))
         (fun ex -> SetErrorMessage(Some ex.Message))
 
-  let albumListView
-    (albums: Album list)
-    (musicStore: MusicStore)
-    (dispatch: Msg -> unit)
-    (state: State)
-    =
-    Html.ul(
-      albums
-      |> List.map(fun album ->
-        Html.li [
-          prop.text(album.title + " by " + album.artist)
+  [<ReactComponent>]
+  let AlbumListItem(album: Album, dispatch: Msg -> unit) =
+    Html.li [
+      prop.className "album-list-item"
+      prop.children [
+        Html.div [
+          prop.className "album-list-item-content"
+          prop.children [
+            Html.span [
+              prop.className "album-list-item-title"
+              prop.text(album.title)
+            ]
+            Html.span [
+              prop.className "album-list-item-artist"
+              prop.text("by " + album.artist)
+            ]
+          ]
+        ]
+        Html.div [
+          prop.className "album-list-item-actions"
           prop.children [
             Html.button [
               prop.text "View"
-              prop.onClick(fun _ ->
-                async {
-                  let! found = musicStore.findById(album.id)
-
-                  match found with
-                  | Some a -> dispatch(SetView(Detail a))
-                  | None -> dispatch(SetView(NotFound "Album not found"))
-                }
-                |> Async.Start)
+              prop.className "album-list-item-btn view"
+              prop.onClick(fun _ -> dispatch(RequestViewDetail album.id))
             ]
             Html.button [
               prop.text "Edit"
+              prop.className "album-list-item-btn edit"
               prop.onClick(fun _ -> dispatch(SetView(Update album)))
             ]
             Html.button [
               prop.text "Delete"
-              prop.onClick(fun _ ->
-                async {
-                  let albums =
-                    state.Albums |> List.filter(fun a -> a.id <> album.id)
-
-                  dispatch(SetAlbums albums)
-                }
-                |> Async.Start)
+              prop.className "album-list-item-btn delete"
+              prop.onClick(fun _ -> dispatch(RequestDeleteAlbum album.id))
             ]
           ]
-        ])
-    )
-
-  [<ReactComponent>]
-  let AlbumListItem(album: Album, dispatch: Msg -> unit) =
-    Html.li [
-      prop.children [
-        Html.span [ prop.text(album.title + " by " + album.artist) ]
-        Html.button [
-          prop.text "View"
-          prop.onClick(fun _ -> dispatch(RequestViewDetail album.id))
-        ]
-        Html.button [
-          prop.text "Edit"
-          prop.onClick(fun _ -> dispatch(SetView(Update album)))
-        ]
-        Html.button [
-          prop.text "Delete"
-          prop.onClick(fun _ -> dispatch(RequestDeleteAlbum album.id))
         ]
       ]
     ]
@@ -397,17 +414,40 @@ module View =
   let AlbumListView(children: ReactElement seq) = Html.ul children
 
   let albumDetailView (album: Album) (dispatch: Msg -> unit) (state: State) =
-    Html.div [
-      Html.h2 album.title
-      Html.p("Artist: " + album.artist)
-      Html.p("Release Date: " + album.releaseDate.ToString("yyyy-MM-dd"))
-      Html.button [
-        prop.text "Edit"
-        prop.onClick(fun _ -> dispatch(SetView(Update album)))
-      ]
-      Html.button [
-        prop.text "Back"
-        prop.onClick(fun _ -> dispatch(SetView(Full state.Albums)))
+    Html.article [
+      prop.className "album-detail-card"
+      prop.children [
+        Html.h2 [ prop.className "album-detail-title"; prop.text album.title ]
+        Html.section [
+          prop.className "album-detail-info"
+          prop.children [
+            Html.p [
+              prop.className "album-detail-artist"
+              prop.text("Artist: " + album.artist)
+            ]
+            Html.p [
+              prop.className "album-detail-date"
+              prop.text(
+                "Release Date: " + album.releaseDate.ToString("yyyy-MM-dd")
+              )
+            ]
+          ]
+        ]
+        Html.section [
+          prop.className "album-detail-actions"
+          prop.children [
+            Html.button [
+              prop.className "album-form-submit-btn"
+              prop.text "Edit"
+              prop.onClick(fun _ -> dispatch(SetView(Update album)))
+            ]
+            Html.button [
+              prop.className "albums-cancel-btn"
+              prop.text "Back"
+              prop.onClick(fun _ -> dispatch(SetView(Full state.Albums)))
+            ]
+          ]
+        ]
       ]
     ]
 
