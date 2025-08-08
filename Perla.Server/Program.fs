@@ -29,6 +29,7 @@ module Program =
     let app = builder.Build()
 
     Albums.RegisterRoutes app
+    Music.RegisterRoutes app
 
     app.Run()
 

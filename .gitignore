@@ -482,4 +482,5 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
-*.fs.js
+**/*.fs.js
+**/MusicFiles
