@@ -225,6 +225,7 @@ let View(store: AudioStore) =
             prop.src src
             prop.controls false
             prop.ref audioRef
+            prop.autoPlay true
             prop.onTimeUpdate onTimeUpdate
             prop.onLoadedMetadata onLoadedMetadata
             prop.onEnded onEnded
