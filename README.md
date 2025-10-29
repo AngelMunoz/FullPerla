@@ -18,7 +18,7 @@ This is a full-stack music streaming application built with F# from top to botto
 
 ## Perla Integration
 
-This project uses [Perla](https://github.com/perla-build/perla) to manage the client-side development workflow. Perla simplifies the development experience by providing a complete toolchain for Fable projects, including:
+This project uses [Perla](https://github.com/AngelMunoz/Perla) to manage the client-side development workflow. Perla simplifies the development experience by providing a complete toolchain for Fable projects, including:
 
 - **Development Server:** A live-reloading development server that automatically recompiles your F# code and refreshes your browser.
 - **Dependency Management:** Perla handles F# and JavaScript dependencies without requiring you to interact with `npm` or `yarn`.
